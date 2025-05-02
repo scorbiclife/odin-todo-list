@@ -16,7 +16,7 @@ export class MainModel {
   }
 
   getAllProjects() {
-    return this.projects.map((p) => p.clone());
+    return this.projects;
   }
 
   getDefaultProject() {

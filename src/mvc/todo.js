@@ -13,20 +13,8 @@ export class TodoModel {
     return new TodoModel(this);
   }
 
-  editTitle(newTitle) {
-    this.title = newTitle;
-  }
-
-  editDescription(newDescription) {
-    this.description = newDescription;
-  }
-
-  editDueDate(newDueDate) {
-    this.dueDate = newDueDate;
-  }
-
-  editPriority(newPriority) {
-    this.priority = newPriority;
+  replaceWith(newModel) {
+    Object.assign(this, newModel);
   }
 }
 
@@ -39,50 +27,57 @@ export class TodoController {
     function createInputSection({ name, type, labelText, ...attributes }) {
       const inputId = crypto.randomUUID();
       const $inputSection = $("div")(
-        $("label", { htmlFor: inputId })(labelText),
+        $("label", { for: inputId })(labelText),
         $("input", { name, type, id: inputId, ...attributes })()
       );
       return $inputSection;
     }
+    const $editForm = $("form", {
+      class: "modal-content",
+      action: "/",
+      method: "dialog",
+    })(
+      $("h3")("Create Todo"),
+      createInputSection({
+        name: "title",
+        type: "text",
+        labelText: "Title: ",
+        required: "",
+      }),
+      createInputSection({
+        name: "description",
+        type: "text",
+        labelText: "Description: ",
+        required: "",
+      }),
+      createInputSection({
+        name: "dueDate",
+        type: "date",
+        labelText: "Due Date: ",
+        required: "",
+      }),
+      createInputSection({
+        name: "priority",
+        type: "number",
+        labelText: "Priority: ",
+        required: "",
+        value: 0,
+      }),
+      $("div")(
+        $("button", { value: "cancel", formnovalidate: "" })("Cancel"),
+        $("button", { value: "create" })("Create")
+      )
+    );
     const $editDialog = $("dialog", {
       class: "todo-edit",
       modal: "",
       open: "",
-    })(
-      $("form", { class: "modal-content", action: "/", method: "dialog" })(
-        $("h3")("Create Todo"),
-        createInputSection({
-          name: "title",
-          type: "text",
-          labelText: "Title: ",
-          required: "",
-        }),
-        createInputSection({
-          name: "description",
-          type: "text",
-          labelText: "Description: ",
-          required: "",
-        }),
-        createInputSection({
-          name: "due",
-          type: "date",
-          labelText: "Due Date: ",
-          required: "",
-        }),
-        createInputSection({
-          name: "priority",
-          type: "number",
-          labelText: "Priority: ",
-          required: "",
-          value: 0,
-        }),
-        $("div")(
-          $("button", { value: "cancel", formnovalidate: "" })("Cancel"),
-          $("button", { value: "create" })("Create")
-        )
-      )
-    );
+    })($editForm);
     $editDialog.addEventListener("close", () => {
+      // arrow function should be used
+      const editFormData = new FormData($editForm);
+      this.model.replaceWith(Object.fromEntries(editFormData.entries()));
+      $editDialog.dispatchEvent(new CustomEvent("redraw", { bubbles: true }));
       $editDialog.remove();
     });
     return $editDialog;

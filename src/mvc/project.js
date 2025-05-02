@@ -19,7 +19,7 @@ export class ProjectModel {
   }
 
   getAllTodos() {
-    return this.todos.map((todo) => todo.clone());
+    return this.todos;
   }
 
   deleteTodo(todo) {

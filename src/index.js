@@ -2,7 +2,8 @@ import "./index.css";
 import { TodoModel } from "./mvc/todo.js";
 import { MainController, MainModel } from "./mvc/main.js";
 
-function $appContent() {
+const model = (function createModel() {
+  const model = new MainModel();
   const todos = [
     new TodoModel({
       title: "foo",
@@ -19,15 +20,23 @@ function $appContent() {
       id: crypto.randomUUID(),
     }),
   ];
-  const model = new MainModel();
   todos.forEach((todo) => model.getDefaultProject().createTodo(todo));
+  return model;
+})();
+
+function $appContent() {
   const controller = new MainController(model);
   return controller.createView();
 }
 
-function initApp() {
+function drawApp() {
   const app = document.getElementById("app");
   app?.replaceChildren($appContent());
 }
 
-document.addEventListener("DOMContentLoaded", initApp);
+function initPage() {
+  drawApp();
+  document.addEventListener("redraw", drawApp);
+}
+
+document.addEventListener("DOMContentLoaded", initPage);
