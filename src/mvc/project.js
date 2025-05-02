@@ -33,12 +33,14 @@ export class ProjectController {
   }
 
   createView() {
-    return $("ul", { "data-project-id": this.model.id })(
+    return $("div", { "data-project-id": this.model.id })(
       $("h2")(this.model.name),
-      ...this.model
-        .getAllTodos()
-        .map((todo) => new TodoController(todo).createView())
-        .map(($view) => $("li")($view))
+      $("ul", { class: "todo_list" })(
+        ...this.model
+          .getAllTodos()
+          .map((todo) => new TodoController(todo).createView())
+          .map(($view) => $("li")($view))
+      )
     );
   }
 }

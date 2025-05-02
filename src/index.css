@@ -34,3 +34,79 @@ li {
 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+.project_list {
+  display: flex;
+  flex-flow: column nowrap;
+
+  padding: 16px;
+  gap: 8px;
+}
+
+[data-project-id] {
+  display: flex;
+  flex-flow: column nowrap;
+
+  gap: 8px;
+  padding: 16px;
+  border-radius: 8px;
+
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.todo_list {
+  display: flex;
+  gap: 8px;
+}
+
+[data-todo-id] {
+  width: 240px;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-flow: column nowrap;
+
+  justify-content: start;
+  align-items: stretch;
+
+  gap: 8px;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: baseline;
+
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+}
+
+.todo-form {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.todo-form_input-section {
+  display: flex;
+}
+
+.todo-form label {
+  flex: 0 0 auto;
+}
+
+.todo-form input {
+  height: 1.5rem;
+  flex: 1 0 0;
+}
+
+.todo-form_action-menu {
+  display: flex;
+  gap: 4px;
+}

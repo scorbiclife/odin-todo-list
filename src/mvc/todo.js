@@ -29,16 +29,16 @@ export class TodoController {
   }
 
   #createEditDialog() {
-    const createInputSection=({ name, type, labelText, ...attributes }) => {
+    const createInputSection = ({ name, type, labelText, ...attributes }) => {
       const inputId = crypto.randomUUID();
-      const $inputSection = $("div")(
+      const $inputSection = $("div", { class: "todo-form_input-section"})(
         $("label", { for: inputId })(labelText),
         $("input", { name, type, id: inputId, ...attributes })()
       );
       return $inputSection;
-    }
+    };
     const $editForm = $("form", {
-      class: "modal-content",
+      class: "modal-content todo-form",
       action: "/",
       method: "dialog",
     })(
@@ -71,7 +71,7 @@ export class TodoController {
         value: this.model.priority,
         required: "",
       }),
-      $("div")(
+      $("menu", { class: "todo-form_action-menu" })(
         $("button", { value: "cancel", formnovalidate: "" })("Cancel"),
         $("button", { value: "create" })("Create")
       )

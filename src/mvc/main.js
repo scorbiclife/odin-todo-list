@@ -35,7 +35,7 @@ export class MainController {
   }
 
   createView() {
-    return $("ul")(
+    return $("ul", { class: "project_list" })(
       ...this.model
         .getAllProjects()
         .map((project) => new ProjectController(project).createView())
