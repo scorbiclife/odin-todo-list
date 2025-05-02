@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { $ } from "../lib/createElement.js";
 
 export class TodoModel {
@@ -23,8 +24,12 @@ export class TodoController {
     this.model = todoModel;
   }
 
+  formattedDueDate() {
+    return format(this.model.dueDate, "yyyy-MM-dd");
+  }
+
   #createEditDialog() {
-    function createInputSection({ name, type, labelText, ...attributes }) {
+    const createInputSection=({ name, type, labelText, ...attributes }) => {
       const inputId = crypto.randomUUID();
       const $inputSection = $("div")(
         $("label", { for: inputId })(labelText),
@@ -42,26 +47,29 @@ export class TodoController {
         name: "title",
         type: "text",
         labelText: "Title: ",
+        value: this.model.title,
         required: "",
       }),
       createInputSection({
         name: "description",
         type: "text",
         labelText: "Description: ",
+        value: this.model.description,
         required: "",
       }),
       createInputSection({
         name: "dueDate",
         type: "date",
         labelText: "Due Date: ",
+        value: this.formattedDueDate(),
         required: "",
       }),
       createInputSection({
         name: "priority",
         type: "number",
         labelText: "Priority: ",
+        value: this.model.priority,
         required: "",
-        value: 0,
       }),
       $("div")(
         $("button", { value: "cancel", formnovalidate: "" })("Cancel"),
@@ -94,11 +102,11 @@ export class TodoController {
   }
 
   createView() {
-    const { title, description, dueDate, priority, id } = this.model;
+    const { title, description, priority, id } = this.model;
     return $("div", { "data-todo-id": id })(
       $("h3")(title),
       $("p")(description),
-      $("div")(`due: ${dueDate}`),
+      $("div")(`due: ${this.formattedDueDate()}`),
       $("div")(`priority: ${priority}`),
       this.#createEditButton()
     );
