@@ -1,5 +1,6 @@
-import { format } from "date-fns";
 import { $ } from "../lib/createElement.js";
+import { formattedDueDate } from "../lib/date.js";
+import { TodoModalController } from "./todo-modal.js";
 
 export class TodoModel {
   constructor({ title, description, dueDate, priority, id }) {
@@ -24,79 +25,11 @@ export class TodoController {
     this.model = todoModel;
   }
 
-  formattedDueDate() {
-    return format(this.model.dueDate, "yyyy-MM-dd");
-  }
-
-  #createEditDialog() {
-    const createInputSection = ({ name, type, labelText, ...attributes }) => {
-      const inputId = crypto.randomUUID();
-      const $inputSection = $("div", { class: "todo-form_input-section"})(
-        $("label", { for: inputId })(labelText),
-        $("input", { name, type, id: inputId, ...attributes })()
-      );
-      return $inputSection;
-    };
-    const $editForm = $("form", {
-      class: "modal-content todo-form",
-      action: "/",
-      method: "dialog",
-    })(
-      $("h3")("Input Todo"),
-      createInputSection({
-        name: "title",
-        type: "text",
-        labelText: "Title: ",
-        value: this.model.title,
-        required: "",
-      }),
-      createInputSection({
-        name: "description",
-        type: "text",
-        labelText: "Description: ",
-        value: this.model.description,
-        required: "",
-      }),
-      createInputSection({
-        name: "dueDate",
-        type: "date",
-        labelText: "Due Date: ",
-        value: this.formattedDueDate(),
-        required: "",
-      }),
-      createInputSection({
-        name: "priority",
-        type: "number",
-        labelText: "Priority: ",
-        value: this.model.priority,
-        required: "",
-      }),
-      $("menu", { class: "todo-form_action-menu" })(
-        $("button", { value: "cancel", formnovalidate: "" })("Cancel"),
-        $("button", { value: "create" })("Create")
-      )
-    );
-    const $editDialog = $("dialog", {
-      class: "todo-edit",
-      modal: "",
-      open: "",
-    })($editForm);
-    $editDialog.addEventListener("close", () => {
-      // arrow function should be used
-      const editFormData = new FormData($editForm);
-      this.model.replaceWith(Object.fromEntries(editFormData.entries()));
-      $editDialog.dispatchEvent(new CustomEvent("redraw", { bubbles: true }));
-      $editDialog.remove();
-    });
-    return $editDialog;
-  }
 
   #createEditButton() {
     const $button = $("button")("edit");
     $button.addEventListener("click", () => {
-      // click handler should be an arrow function
-      // to use a statically bound `this` todo controller
-      document.body.append(this.#createEditDialog());
+      new TodoModalController(this.model).showModal();
     });
     return $button;
   }
@@ -106,7 +39,7 @@ export class TodoController {
     return $("div", { "data-todo-id": id })(
       $("h3")(title),
       $("p")(description),
-      $("div")(`due: ${this.formattedDueDate()}`),
+      $("div")(`due: ${formattedDueDate(this.model.dueDate)}`),
       $("div")(`priority: ${priority}`),
       this.#createEditButton()
     );
