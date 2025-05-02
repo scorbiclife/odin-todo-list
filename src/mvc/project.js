@@ -32,9 +32,17 @@ export class ProjectController {
     this.model = projectModel;
   }
 
+  #createNewProjectButton() {
+    const $button = $("button")("new");
+    $button.addEventListener("click", () => {
+      debugger;
+    })
+    return $button;
+  }
+
   createView() {
     return $("div", { "data-project-id": this.model.id })(
-      $("h2")(this.model.name),
+      $("header")($("h2")(this.model.name), this.#createNewProjectButton()),
       $("ul", { class: "todo_list" })(
         ...this.model
           .getAllTodos()
