@@ -42,7 +42,7 @@ export class TodoController {
       action: "/",
       method: "dialog",
     })(
-      $("h3")("Create Todo"),
+      $("h3")("Input Todo"),
       createInputSection({
         name: "title",
         type: "text",
