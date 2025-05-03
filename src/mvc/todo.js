@@ -25,6 +25,20 @@ export class TodoModel {
     return new TodoModel(this);
   }
 
+  static parse(todoJson) {
+    return new TodoModel(todoJson);
+  }
+
+  serialize() {
+    return {
+      title: this.title,
+      description: this.description,
+      dueDate: this.dueDate,
+      priority: this.priority,
+      id: this.id,
+    };
+  }
+
   replaceWith(newModel) {
     Object.assign(this, newModel);
   }

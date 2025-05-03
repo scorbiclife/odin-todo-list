@@ -16,6 +16,23 @@ export class ProjectModel {
     return result;
   }
 
+  static parse(projectJson) {
+    const model = new ProjectModel({
+      name: projectJson.name,
+      id: projectJson.id,
+    });
+    model.todos = projectJson.todos.map(TodoModel.parse);
+    return model;
+  }
+
+  serialize() {
+    return {
+      name: this.name,
+      id: this.id,
+      todos: this.todos.map((t) => t.serialize()),
+    };
+  }
+
   addTodo(todo) {
     this.todos.push(todo);
   }

@@ -1,43 +1,33 @@
 import "./index.css";
-import { TodoModel } from "./mvc/todo.js";
 import { MainController, MainModel } from "./mvc/main.js";
 import { RedrawEvent } from "./lib/RedrawEvent.js";
 
-const model = (function createModel() {
-  const model = new MainModel();
-  const todos = [
-    new TodoModel({
-      title: "foo",
-      description: "gotta show my vim foo",
-      dueDate: new Date(),
-      priority: 3,
-      id: crypto.randomUUID(),
-    }),
-    new TodoModel({
-      title: "bar",
-      description: "vim has a high bar to entry",
-      dueDate: new Date(),
-      priority: 3,
-      id: crypto.randomUUID(),
-    }),
-  ];
-  todos.forEach((todo) => model.getDefaultProject().addTodo(todo));
-  return model;
+const model = (function getModelFromLocalStorage() {
+  const mainModelString = localStorage.getItem("model");
+  const mainModel = mainModelString
+    ? MainModel.parse(JSON.parse(mainModelString))
+    : new MainModel();
+  return mainModel;
 })();
 
-function $appContent() {
-  const controller = new MainController(model);
-  return controller.createView();
+function saveModelToLocalStorage(model) {
+  localStorage.setItem("model", JSON.stringify(model.serialize()));
 }
 
 function drawApp() {
   const app = document.getElementById("app");
-  app?.replaceChildren($appContent());
+  const $app = new MainController(model).createView();
+  app?.replaceChildren($app);
+}
+
+function syncApp() {
+  saveModelToLocalStorage(model);
+  drawApp();
 }
 
 function initPage() {
   drawApp();
-  RedrawEvent.addEventListenerTo(document, drawApp);
+  RedrawEvent.addEventListenerTo(document, syncApp);
 }
 
 document.addEventListener("DOMContentLoaded", initPage);

@@ -12,6 +12,18 @@ export class MainModel {
     this.projects = [this.defaultProject];
   }
 
+  static parse(mainJson) {
+    const model = new MainModel();
+    model.projects = mainJson.projects.map(ProjectModel.parse);
+    return model;
+  }
+
+  serialize() {
+    return {
+      projects: this.projects.map((p) => p.serialize()),
+    };
+  }
+
   createProject({ name, id }) {
     this.projects.push(new ProjectModel({ name, id }));
   }
