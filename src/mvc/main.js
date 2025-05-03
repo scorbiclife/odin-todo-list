@@ -57,7 +57,8 @@ export class MainController {
       });
       document.dispatchEvent(new RedrawEvent());
     });
-    return $("div", {})(
+    return $("div", { class: "main-container" })(
+      $("h1")("Odin Todo List"),
       $("menu", { class: "main-menu" })($newProjectButton, $newProjectDialog),
       $("ul", { class: "project_list" })(
         ...this.model
