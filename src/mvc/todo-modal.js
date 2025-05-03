@@ -54,7 +54,7 @@ export class TodoModalController {
         value: this.todo.priority,
         required: "",
       }),
-      $("menu", { class: "todo-form_action-menu" })(
+      $("menu", { class: "action-menu" })(
         $("button", { value: "cancel", formnovalidate: "" })("Cancel"),
         $("button", { value: "update" })("Update")
       )

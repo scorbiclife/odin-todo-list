@@ -18,7 +18,7 @@ export class TodoModel {
       dueDate: new Date(),
       priority: 0,
       id: crypto.randomUUID(),
-    })
+    });
   }
 
   clone() {
@@ -35,13 +35,16 @@ export class TodoController {
     this.model = todoModel;
   }
 
-
   #createEditButton() {
     const $button = $("button")("edit");
     $button.addEventListener("click", () => {
       new TodoModalController(this.model).showModal();
     });
     return $button;
+  }
+
+  #createRemoveButton() {
+    return $("button")("remove");
   }
 
   createView() {
@@ -51,7 +54,10 @@ export class TodoController {
       $("p")(description),
       $("div")(`due: ${formattedDueDate(this.model.dueDate)}`),
       $("div")(`priority: ${priority}`),
-      this.#createEditButton()
+      $("menu", { class: "action-menu" })(
+        this.#createEditButton(),
+        this.#createRemoveButton()
+      )
     );
   }
 }

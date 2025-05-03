@@ -111,7 +111,7 @@ button {
   flex: 1 0 0;
 }
 
-.todo-form_action-menu {
+.action-menu {
   display: flex;
   gap: 4px;
 }
