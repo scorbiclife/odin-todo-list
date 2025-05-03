@@ -1,4 +1,5 @@
 import { $ } from "../lib/createElement.js";
+import { RedrawEvent } from "../lib/RedrawEvent.js";
 import { TodoModalController } from "./todo-modal.js";
 import { TodoController, TodoModel } from "./todo.js";
 
@@ -58,7 +59,7 @@ export class ProjectController {
         return;
       }
       this.model.deleteTodoById(event.target.dataset.todoId);
-      $view.dispatchEvent(new CustomEvent("redraw", { bubbles: true }));
+      $view.dispatchEvent(new RedrawEvent());
     });
     return $view;
   }

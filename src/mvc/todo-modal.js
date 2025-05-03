@@ -1,5 +1,6 @@
 import { $ } from "../lib/createElement.js";
 import { formattedDueDate } from "../lib/date.js";
+import { RedrawEvent } from "../lib/RedrawEvent.js";
 import { TodoModel } from "./todo.js";
 
 export class TodoModalController {
@@ -70,7 +71,7 @@ export class TodoModalController {
         // arrow function should be used
         this.todo.replaceWith(Object.fromEntries(editFormData.entries()));
       }
-      $editDialog.dispatchEvent(new CustomEvent("redraw", { bubbles: true }));
+      $editDialog.dispatchEvent(new RedrawEvent());
       $editDialog.remove();
     });
     return $editDialog;

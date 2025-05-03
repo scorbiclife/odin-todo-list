@@ -1,6 +1,7 @@
 import "./index.css";
 import { TodoModel } from "./mvc/todo.js";
 import { MainController, MainModel } from "./mvc/main.js";
+import { RedrawEvent } from "./lib/RedrawEvent.js";
 
 const model = (function createModel() {
   const model = new MainModel();
@@ -36,7 +37,7 @@ function drawApp() {
 
 function initPage() {
   drawApp();
-  document.addEventListener("redraw", drawApp);
+  RedrawEvent.addEventListenerTo(document, drawApp);
 }
 
 document.addEventListener("DOMContentLoaded", initPage);
