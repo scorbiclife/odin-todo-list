@@ -44,12 +44,15 @@ export class TodoController {
   }
 
   #createRemoveButton() {
-    return $("button")("remove");
+    return $("button", {
+      "data-action": "remove-todo",
+      "data-todo-id": this.model.id,
+    })("remove");
   }
 
   createView() {
     const { title, description, priority, id } = this.model;
-    return $("div", { "data-todo-id": id })(
+    return $("div", { "data-todo-id": id, class: "todo" })(
       $("h3")(title),
       $("p")(description),
       $("div")(`due: ${formattedDueDate(this.model.dueDate)}`),

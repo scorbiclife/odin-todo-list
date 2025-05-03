@@ -23,8 +23,8 @@ export class ProjectModel {
     return this.todos;
   }
 
-  deleteTodo(todo) {
-    this.todos = this.todos.filter((t) => t !== todo);
+  deleteTodoById(todoId) {
+    this.todos = this.todos.filter((todo) => todo.id !== todoId);
   }
 }
 
@@ -44,7 +44,7 @@ export class ProjectController {
   }
 
   createView() {
-    return $("div", { "data-project-id": this.model.id })(
+    const $view = $("div", { "data-project-id": this.model.id })(
       $("header")($("h2")(this.model.name), this.#createNewTodoButton()),
       $("ul", { class: "todo_list" })(
         ...this.model
@@ -53,5 +53,13 @@ export class ProjectController {
           .map(($view) => $("li")($view))
       )
     );
+    $view.addEventListener("click", (event) => {
+      if (event.target.dataset.action !== "remove-todo") {
+        return;
+      }
+      this.model.deleteTodoById(event.target.dataset.todoId);
+      $view.dispatchEvent(new CustomEvent("redraw", { bubbles: true }));
+    });
+    return $view;
   }
 }
