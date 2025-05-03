@@ -8,6 +8,21 @@ li {
   list-style: none;
 }
 
+input {
+  height: 1.5rem;
+}
+
+.main-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+dialog {
+  position: static;
+}
+
+
 .todo-edit {
   position: fixed;
   top: 0;
@@ -112,7 +127,6 @@ button {
 }
 
 .todo-form input {
-  height: 1.5rem;
   flex: 1 0 0;
 }
 

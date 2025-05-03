@@ -1,6 +1,7 @@
 import { TodoModel } from "./todo.js";
 import { ProjectController, ProjectModel } from "./project.js";
 import { $ } from "../lib/createElement.js";
+import { RedrawEvent } from "../lib/RedrawEvent.js";
 
 export class MainModel {
   constructor() {
@@ -34,9 +35,30 @@ export class MainController {
     this.model = mainModel;
   }
 
+  #createNewProjectButton() {}
+
   createView() {
+    const $newProjectButton = $("button")("new project");
+    const $newProjectDialog = $("dialog", { id: "new-project-dialog" })(
+      $("form", { action: "#", method: "dialog" })(
+        $("label", { for: "new-project-name" })(),
+        $("input", { id: "new-project-name", name: "name" })(),
+        $("button")("create")
+      )
+    );
+    $newProjectButton.addEventListener("click", () => {
+      $newProjectDialog.show();
+    });
+    $newProjectDialog.addEventListener("close", () => {
+      const newProjectName = document.getElementById("new-project-name")?.value;
+      this.model.createProject({
+        name: newProjectName,
+        id: crypto.randomUUID(),
+      });
+      document.dispatchEvent(new RedrawEvent());
+    });
     return $("div", {})(
-      $("menu", { class: "main-menu" })($("button")("New Project")),
+      $("menu", { class: "main-menu" })($newProjectButton, $newProjectDialog),
       $("ul", { class: "project_list" })(
         ...this.model
           .getAllProjects()
