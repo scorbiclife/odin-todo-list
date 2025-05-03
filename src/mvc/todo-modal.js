@@ -56,7 +56,7 @@ export class TodoModalController {
       }),
       $("menu", { class: "todo-form_action-menu" })(
         $("button", { value: "cancel", formnovalidate: "" })("Cancel"),
-        $("button", { value: "create" })("Create")
+        $("button", { value: "update" })("Update")
       )
     );
     const $editDialog = $("dialog", {
@@ -65,9 +65,11 @@ export class TodoModalController {
       open: "",
     })($editForm);
     $editDialog.addEventListener("close", () => {
-      // arrow function should be used
-      const editFormData = new FormData($editForm);
-      this.todo.replaceWith(Object.fromEntries(editFormData.entries()));
+      if ($editDialog.returnValue === "update") {
+        const editFormData = new FormData($editForm);
+        // arrow function should be used
+        this.todo.replaceWith(Object.fromEntries(editFormData.entries()));
+      }
       $editDialog.dispatchEvent(new CustomEvent("redraw", { bubbles: true }));
       $editDialog.remove();
     });
