@@ -80,4 +80,14 @@ export class TodoModalController {
   showModal() {
     document.body.appendChild(this.#createView());
   }
+
+  showModalWithCancelAction(onCancel) {
+    const $view = this.#createView();
+    document.body.appendChild($view);
+    $view.addEventListener("close", () => {
+      if ($view.returnValue === "cancel") {
+        onCancel();
+      }
+    });
+  }
 }

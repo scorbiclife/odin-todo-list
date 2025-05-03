@@ -39,7 +39,10 @@ export class ProjectController {
     $button.addEventListener("click", () => {
       const createdTodo = TodoModel.createEmptyTodo();
       this.model.addTodo(createdTodo);
-      new TodoModalController(createdTodo).showModal();
+      new TodoModalController(createdTodo).showModalWithCancelAction(() => {
+        this.model.deleteTodoById(createdTodo.id);
+        document.dispatchEvent(new RedrawEvent());
+      });
     });
     return $button;
   }
