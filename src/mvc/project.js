@@ -1,5 +1,6 @@
 import { $ } from "../lib/createElement.js";
-import { TodoController } from "./todo.js";
+import { TodoModalController } from "./todo-modal.js";
+import { TodoController, TodoModel } from "./todo.js";
 
 export class ProjectModel {
   constructor({ name, id }) {
@@ -14,7 +15,7 @@ export class ProjectModel {
     return result;
   }
 
-  createTodo(todo) {
+  addTodo(todo) {
     this.todos.push(todo);
   }
 
@@ -32,17 +33,19 @@ export class ProjectController {
     this.model = projectModel;
   }
 
-  #createNewProjectButton() {
+  #createNewTodoButton() {
     const $button = $("button")("new");
     $button.addEventListener("click", () => {
-      debugger;
-    })
+      const createdTodo = TodoModel.createEmptyTodo();
+      this.model.addTodo(createdTodo);
+      new TodoModalController(createdTodo).showModal();
+    });
     return $button;
   }
 
   createView() {
     return $("div", { "data-project-id": this.model.id })(
-      $("header")($("h2")(this.model.name), this.#createNewProjectButton()),
+      $("header")($("h2")(this.model.name), this.#createNewTodoButton()),
       $("ul", { class: "todo_list" })(
         ...this.model
           .getAllTodos()

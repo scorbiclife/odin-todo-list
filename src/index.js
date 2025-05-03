@@ -20,7 +20,7 @@ const model = (function createModel() {
       id: crypto.randomUUID(),
     }),
   ];
-  todos.forEach((todo) => model.getDefaultProject().createTodo(todo));
+  todos.forEach((todo) => model.getDefaultProject().addTodo(todo));
   return model;
 })();
 

@@ -11,6 +11,16 @@ export class TodoModel {
     this.id = id;
   }
 
+  static createEmptyTodo() {
+    return new TodoModel({
+      title: "",
+      description: "",
+      dueDate: new Date(),
+      priority: 0,
+      id: crypto.randomUUID(),
+    })
+  }
+
   clone() {
     return new TodoModel(this);
   }
