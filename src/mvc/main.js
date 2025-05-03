@@ -35,11 +35,14 @@ export class MainController {
   }
 
   createView() {
-    return $("ul", { class: "project_list" })(
-      ...this.model
-        .getAllProjects()
-        .map((project) => new ProjectController(project).createView())
-        .map(($view) => $("li")($view))
+    return $("div", {})(
+      $("menu", { class: "main-menu" })($("button")("New Project")),
+      $("ul", { class: "project_list" })(
+        ...this.model
+          .getAllProjects()
+          .map((project) => new ProjectController(project).createView())
+          .map(($view) => $("li")($view))
+      )
     );
   }
 }

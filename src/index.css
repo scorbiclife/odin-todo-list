@@ -35,6 +35,11 @@ li {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.main-menu {
+  padding: 16px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
 .project_list {
   display: flex;
   flex-flow: column nowrap;
